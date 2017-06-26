@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <includedPredefinedLibrary name="Node.js Core" />
+    <file url="PROJECT" libraries="{Dojo-1.8.3, jQuery UI-1.10.2, jQuery-2.0.0, mysql-DefinitelyTyped, ssh2-DefinitelyTyped}" />
   </component>
 </project>
