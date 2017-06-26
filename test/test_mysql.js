@@ -22,7 +22,9 @@ const connection = mysql.createConnection({
 });
 
 
+
 // query and pull data from db
+
 connection.query('select * from `amass_gateway_cipres` where `TOOL_NAME`  = ? AND `USER_SUBMIT_DATE` > ?', ['BEAST2_XSEDE', '2016-05-28'],
     function(
         err,
