@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="3a6120c8-4f03-45c9-9ab7-33fdd6238a14" name="lima-vc-4.sdsc.optiputer.net" url="http://lima-vc-4.sdsc.optiputer.net">
+        <fileTransfer host="lima-vc-4.sdsc.optiputer.net" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/var/www/html/amass" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

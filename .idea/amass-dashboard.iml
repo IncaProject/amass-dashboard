@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="django" name="Django">
+      <configuration>
+        <option name="rootFolder" value="$MODULE_DIR$" />
+        <option name="settingsModule" value="mysqlamass/settings.py" />
+        <option name="manageScript" value="manage.py" />
+        <option name="environment" value="&lt;map/&gt;" />
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
@@ -13,5 +23,8 @@
     <orderEntry type="library" name="jQuery UI-1.10.2" level="application" />
     <orderEntry type="library" name="ssh2-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="mysql-DefinitelyTyped" level="application" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_CONFIGURATION" value="Django" />
   </component>
 </module>
