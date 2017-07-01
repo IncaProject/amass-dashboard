@@ -3,6 +3,7 @@
 <html>
 <head>
     <script src="https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js"></script>
+    <script src="https://cdn.anychart.com/themes/latest/dark_blue.min.js"></script>
     <link rel="stylesheet" href="https://cdn.anychart.com/css/7.14.0/anychart-ui.min.css"/>
     <style>
         html, body, #chart {
@@ -11,12 +12,16 @@
             margin: 0;
             padding: 0;
         }
+
+
     </style>
 </head>
 <body>
 <div id="chart"></div>
 <script type="text/javascript">
     anychart.onDocumentReady(function () {
+        anychart.theme('darkBlue');
+
         // create pie chart with passed data
         var chart = anychart.fromJson({{chartDataOne|safe}});
         chart.innerRadius('40%');
@@ -37,17 +42,24 @@
         // paginator position
         legend.paginator().orientation("bottom");
         // initiate chart drawing
+        chart.bounds(0, 160, '80%', '60%');
+
         chart.draw();
+
     });
 </script>
 <div id="chart"></div>
 <script type="text/javascript">
+
     anychart.onDocumentReady(function () {
+        anychart.theme('darkBlue');
+
         // create pie chart with passed data
         var chart = anychart.fromJson({{chartDataTwo|safe}});
         chart.innerRadius('40%');
         // set chart labels position to outside
         chart.labels().position('outside');
+
         // legends
         var legend = chart.legend();
         legend.enabled(true);
@@ -63,8 +75,27 @@
         // paginator position
         legend.paginator().orientation("bottom");
         // initiate chart drawing
+        chart.bounds(0,  0, '80%', '60%');
         chart.draw();
+
     });
+
+
+</script>
+
+<div id="chart"></div>
+<script type="text/javascript">
+    anychart.onDocumentReady(function () {
+        // create pie chart with passed data
+        anychart.theme('darkBlue');
+
+        var chart = anychart.fromJson({{chartDataThree|safe}});
+        chart.bounds(0, 160, '80%', '60%');
+        chart.draw();
+
+    });
+
+
 </script>
 </body>
 </html>
