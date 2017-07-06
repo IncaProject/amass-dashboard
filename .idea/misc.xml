@@ -5,4 +5,5 @@
     <exe-path />
     <config-path />
   </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 2.7.13 (~/anaconda/bin/python)" project-jdk-type="Python SDK" />
 </project>

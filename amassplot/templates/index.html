@@ -13,6 +13,13 @@
             padding: 0;
         }
 
+        html, body, #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
 
     </style>
 </head>
@@ -90,12 +97,199 @@
         anychart.theme('darkBlue');
 
         var chart = anychart.fromJson({{chartDataThree|safe}});
-        chart.bounds(0, 160, '80%', '60%');
+        chart.bounds(0, 20, '80%', '80%');
         chart.draw();
 
     });
 
 
+
+
+
 </script>
+
+
+<div id="chart"></div>
+<script type="text/javascript">
+    anychart.onDocumentReady(function () {
+        // create pie chart with passed data
+
+        var chart = anychart.fromJson({{chartDataFour|safe}});
+        chart.bounds(0, 160, '80%', '70%');
+        chart.draw();
+
+    });
+
+
+
+
+
+</script>
+
+<div id="chart"></div>
+<script type="text/javascript">
+    anychart.onDocumentReady(function () {
+        // create pie chart with passed data
+
+{#        var chart = anychart.fromJson({{chartDataFive|safe}});#}
+{#        chart.bounds(0, 160, '80%', '60%');#}
+{#        chart.draw();#}
+{#        #}
+         var chart = anychart.fromJson({{chartDataFive|safe}});
+        chart.innerRadius('40%');
+        // set chart labels position to outside
+        //create variables for legends
+        chart.labels().position('outside');
+         // legends
+        var legend = chart.legend();
+        legend.enabled(true);
+        // Set maximum width and height.
+        legend.maxWidth("80%");
+        legend.maxHeight("20%");
+        // set position mode
+        legend.positionMode("outside");
+        // set position and alignement
+        legend.position("bottom");
+        legend.align("center");
+        legend.itemsLayout("verticalExpandable");
+        // paginator position
+        legend.paginator().orientation("bottom");
+        // initiate chart drawing
+        chart.bounds(0, 160, '80%', '60%');
+
+        chart.draw();
+
+    });
+
+
+
+
+
+</script>
+
+<div id="chart"></div>
+<script type="text/javascript">
+    anychart.onDocumentReady(function () {
+        // create pie chart with passed data
+
+        var chart = anychart.fromJson({{chartDataSix|safe}});
+        chart.bounds(0, 160, '80%', '70%');
+        chart.draw();
+
+    });
+
+
+
+
+
+</script>
+
+<div id="container"></div>
+
+
+<script type="text/javascript">
+   var names = ['Comet', 'Gordon'];
+var data = [67467, 92810];
+var divisor = 63175;
+var divisortwo = 89628;
+var datafinal = [(divisor/data[0])*100,([divisortwo/data[1]]*100)]
+var dataSet = anychart.data.set(datafinal);
+var palette = anychart.palettes.distinctColors().items(['#64b5f6', '#1976d2', '#ef6c00', '#ffd54f', '#455a64', '#96a6a6', '#dd2c00', '#00838f', '#00bfa5', '#ffa000']);
+
+var makeBarWithBar = function(gauge, radius, i, width, without_stroke) {
+  var stroke = '1 #e5e4e4';
+  if (without_stroke) {
+    stroke = null;
+    gauge.label(i)
+      .text(names[i] + ', <span style="">' + datafinal[i].toFixed(1)  + '%</span>') // color: #7c868e
+      .useHtml(true)
+        ;
+
+    gauge.label(i)
+      .hAlign('center')
+      .vAlign('middle')
+      .anchor('rightCenter')
+      .padding(0, 10)
+      .height(width / 2 + '%')
+      .offsetY(radius + '%')
+      .offsetX(0);
+
+  }
+
+  gauge.bar(i).dataIndex(i)
+    .radius(radius)
+    .width(width)
+    .fill(palette.itemAt(i))
+    .stroke(null)
+    .zIndex(5);
+  gauge.bar(i + 100).dataIndex(5)
+    .radius(radius)
+    .width(width)
+    .fill('#F5F4F4')
+    .stroke(stroke)
+    .zIndex(4);
+
+  return gauge.bar(i)
+};
+
+anychart.onDocumentReady(function() {
+  anychart.theme('darkBlue');
+  gauge = anychart.gauges.circular();
+  gauge.data(dataSet);
+  gauge.fill('#fff')
+    .stroke(null)
+    .padding(0)
+    .margin(100)
+    .startAngle(0)
+    .sweepAngle(270);
+
+  var axis = gauge.axis().radius(100).width(1).fill(null);
+  axis.scale()
+    .minimum(0)
+    .maximum(100)
+    .ticks({
+      interval: 1
+    })
+    .minorTicks({
+      interval: 1
+    });
+  axis.labels().enabled(false);
+  axis.ticks().enabled(false);
+  axis.minorTicks().enabled(false);
+  makeBarWithBar(gauge, 100, 0, 18, true);
+  makeBarWithBar(gauge, 80, 1, 18, true);
+
+  gauge.margin(50);
+  gauge.title().text('Different success rates for Different Jobs' +
+    '<br/><span style="color:#929292; font-size: 12px;">(Comet and Gordon)</span>').useHtml(true);
+  gauge.title()
+    .enabled(true)
+    .hAlign('center')
+    .padding(0)
+    .margin([0, 0, 20, 0]);
+
+  gauge.container('container');
+  gauge.draw();
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
