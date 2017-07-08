@@ -1,33 +1,82 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from .models import GatewayCipres, CometCipres, GordonCipres
-
+from .models import GatewayCipres, CometCipres, GordonCipres, IncaCipres
+from decimal import *
 from django.shortcuts import render
 import json
 import pandas as pd
+import numpy
+import statistics
 import cPickle as pickle
 
 # Create your views here.
 def index(request):
     data = GatewayCipres.objects.values("TOOL_NAME", "ERROR_MSG", "RESULT", "TERMINATE_DATE", "REMOTE_JOB_SUBMIT_DATE")
-    datatwo = CometCipres.objects.values("resource_id")
+    datatwo = CometCipres.objects.values("RESULT", "resource_id")
     datathree= GordonCipres.objects.values("resource_id")
+    datafour = CometCipres.objects.values("newturnaroundtime")
+    datafive = GordonCipres.objects.values("newturnaroundtime")
+    datasix = GatewayCipres.objects.values("RESULT")
+    dataseven = IncaCipres.objects.values("RESULT")
     datalist = list(data)
     datalisttwo = list(datatwo) + list(datathree)
+    datalistthree = list(datafour)
+    datalistfour = list(datafive)
+    datalistfive = list(datasix)
+    datalistsix = list(dataseven)
+    datalistseven= list(datatwo)
 
 
     chartlist = [[x['TOOL_NAME'], x['ERROR_MSG'], x['RESULT'], x['REMOTE_JOB_SUBMIT_DATE'], x['TERMINATE_DATE']] for x in datalist]
     chartlisttwo = [[x['resource_id']] for x in datalisttwo]
-    chartlistthree = [[x['resource_id']] for x in datalisttwo]
+    chartlistthree = [[x['newturnaroundtime']] for x in datalistthree]
+    chartlistfour = [[x['newturnaroundtime']] for x in datalistfour]
+    chartlistfive =  [[x['RESULT']] for x in datalistfive]
+    chartlistsix =  [[x['RESULT']] for x in datalistsix]
+    chartlistseven = [[x['RESULT']] for x in datalisttwo]
+
     # now get count for toolname and errormsg
     chartdf = pd.DataFrame(chartlist, columns=['toolname', 'errormsg', 'result','remotejbsubdate','termdate'])
     chartdftwo = pd.DataFrame(chartlisttwo, columns=['resourceid'] )
-    #chartdfthree = pd.DataFrame(chartlistthree, columns=['resourceid'])
+    chartdfthree = pd.DataFrame(chartlistthree, columns=['newturnaroundtime'])
+    chartdffour = pd.DataFrame(chartlistfour, columns=['newturnaroundtime'])
+    chartdffive = pd.DataFrame(chartlistfive, columns=['result'])
+    chartdfsix = pd.DataFrame(chartlistsix, columns=['result'])
+    chartdfseven = pd.DataFrame(chartlistseven, columns=['result'])
+
+
 
     # now transform column names as needed
     chartdf['result'].replace([0, 1], ['Failed Jobs', 'Successful Jobs'], inplace=True)
     #chartdf['dff'] = chartdf['termdate'] - chartdf['remotejbsubdate']
     chartdftwo['resourceid'].replace([2814, 2796], ['Comet', 'Gordon'], inplace=True)
+    chartdftwo = chartdftwo.loc[(chartdftwo!=0).any(axis=1)]
+
+    a = int((chartdffive['result'] == 1).sum())
+    b = int((chartdfsix['result'] == 1).sum())
+    x = float(int((chartdffive['result'] == 1).sum() + (chartdffive['result'] == 0).sum()))
+    y = float(int((chartdfsix['result'] == 1).sum() + (chartdfsix['result'] == 0).sum()))
+    e =a / x
+    f = b/ y
+    print e
+    print f
+
+    #for turnaround times, this is getting standard deviation, mean, median, min value, and max value
+    #COMET DATA
+    # print(chartdfthree['newturnaroundtime'].mean(),
+    # chartdfthree['newturnaroundtime'].median(),
+    # chartdfthree['newturnaroundtime'].std(),
+    # chartdfthree['newturnaroundtime'].min(),
+    # chartdfthree['newturnaroundtime'].max())
+    # # #GORDON DATA
+    # print(chartdffour['newturnaroundtime'].mean(),
+    #       chartdffour['newturnaroundtime'].median(),
+    #       chartdffour['newturnaroundtime'].std(),
+    #       chartdffour['newturnaroundtime'].min(),
+    #       chartdffour['newturnaroundtime'].max())
+
+
+
     # chartdfthree['end_time']= pd.to_datetime(chartdfthree['end_time']).apply(lambda x: x.date())
     # chartdfthree['start_time'] = pd.to_datetime(chartdfthree['start_time']).apply(lambda x: x.date())
     # chartdfthree['turnaroundtime'] = chartdfthree['end_time'] - chartdfthree['start_time']
@@ -39,13 +88,17 @@ def index(request):
                                        charttitlex="Tool Name", charttitley="Count", chartcontainerstr="chart")
     chartjsonfour = countBarVerticalChartJson(chartdf, colnamex="toolname", charttitle="Tool Name",
                                        charttitlex="Tool Name", charttitley="# of Jobs", chartcontainerstr="chart")
-    chartjsonfive = countDonutChart(chartdf, colnamex="result", charttitle="RESULT of Successful/Failed Jobs", chartcontainerstr="chart")
+    chartjsonfive = countDonutChart(chartdf, colnamex="result", charttitle="RESULT of Successful/Failed Jobs(Comet)", chartcontainerstr="chart")
     chartjsonsix = countColumnChart(chartdftwo, colnamex="resourceid", charttitle="CIPRES", charttitlex="Resources", charttitley="Number of Jobs", chartcontainerstr="chart")
-    chartjsonseven = countGaugeChart(chartdftwo, colnamex="resourceid", charttitle="Different Companies Success Rates", chartcontainerstr="chart")
+    chartjsonseven = radarChart(chartdfthree, chartdffour, colnamex="newturnaroundtime", charttitle="Turnaround Times for Cipres(Hours)", chartcontainerstr="chart")
+    chartjsoneight = gaugeChart(chartdffive, chartdfsix, colnamex="result", charttitle="Success Rates for Jobs", chartcontainerstr="chart")
+    chartjsonnine = countDonutTwoChart(chartdftwo, colnamex="result", charttitle="RESULT of Successful/Failed Jobs(Gordon)", chartcontainerstr="chart")
     context = {"chartDataOne": chartjsonone, "chartDataTwo": chartjsontwo, "chartDataThree": chartjsonthree, "chartDataFour": chartjsonfour,
                "chartDataFive": chartjsonfive,
                "chartDataSix": chartjsonsix,
                "chartDataSeven": chartjsonseven,
+               "chartDataEight": chartjsoneight,
+               "chartDataNine": chartjsonnine,
                "title": "AMASS Plot Dashboard"}
 
     return render(request, 'index.html', context)
@@ -306,100 +359,6 @@ def countDonutChart(chartdf, colnamex, charttitle, chartcontainerstr):
     chartjson = json.dumps(chart)
     return chartjson
 
-# def countComparisonChart(chartdf, colnamex, colnamextwo, charttitle, chartcontainerstr):
-#     summary = pd.DataFrame(chartdf[colnamex].value_counts(), chartdf[colnamextwo].value_counts())
-#     chartdf = pd.DataFrame({colnamex: list(summary.index), colnamextwo: list(summary.index), 'count': summary[colnamex], 'counttwo':summary[colnamextwo]})
-#     chartdf = chartdf[[colnamex, colnamextwo, 'count', 'counttwo']]
-#     chartdataone = chartdf.values.tolist()
-#
-#     chart = {
-#         "chart": {
-#     "enabled": True,
-#     "container": chartcontainerstr,
-#     "title": {
-#       "enabled": True,
-#       "text": charttitle
-#     },
-#     "credits": {
-#       "text": "AnyChart",
-#       "url": "https://www.anychart.com/?utm_source=registered",
-#       "alt": "AnyChart - JavaScript Charts designed to be embedded and integrated",
-#       "imgAlt": "AnyChart - JavaScript Charts",
-#       "logoSrc": "https://static.anychart.com/logo.png",
-#       "enabled": False
-#     },
-#     "selectMarqueeFill": {
-#       "color": "#d3d3d3",
-#       "opacity": 0.4
-#     },
-#     "legend": {
-#       "enabled": True,
-#       "position": "bottom"
-#     },
-#     "defaultSeriesType": "area",
-#     "xScale": 0,
-#     "yScale": 1,
-#     "series": [
-#       {
-#         "enabled": True,
-#         "seriesType": "area",
-#         "meta": {},
-#         "name": "Arizona",
-#         "data": [
-#          chartdataone,
-#         ],
-#         "xScale": 0,
-#         "yScale": 1
-#       },
-#       {
-#         "enabled": True,
-#         "seriesType": "area",
-#         "meta": {},
-#         "name": "Florida",
-#         "data": [
-#           chartdataone
-#         ],
-#         "xScale": 0,
-#         "yScale": 1
-#       },
-#       {
-#         "enabled": True,
-#         "seriesType": "area",
-#         "meta": {},
-#         "name": "Nevada",
-#         "data": [
-#          chartdataone
-#         ],
-#         "xScale": 0,
-#         "yScale": 1
-#       }
-#     ],
-#     "yAxis": {
-#       "enabled": True,
-#       "labels": {
-#         "enabled": True,
-#         "fontColor": "#545f69",
-#         "format": "{%Value}{scale:(1000000)|(M)}"
-#       },
-#       "ticks": {
-#         "enabled": True,
-#         "stroke": "#545f69"
-#       },
-#       "stroke": "#545f69"
-#     },
-#     "scales": [
-#       {},
-#       {
-#         "stackMode": "value"
-#       }
-#     ],
-#     "type": "radar"
-#   }
-#
-#     }
-#     chartjson = json.dumps(chart)
-#     return chartjson
-
 def countColumnChart(chartdftwo, colnamex, charttitle, charttitlex, charttitley, chartcontainerstr):
 
     summary = pd.DataFrame(chartdftwo[colnamex].value_counts())
@@ -493,13 +452,154 @@ def countColumnChart(chartdftwo, colnamex, charttitle, charttitlex, charttitley,
     chartjson = json.dumps(chart)
     return chartjson
 
-def countGaugeChart(chartdftwo, colnamex, charttitle, chartcontainerstr):
-    summary = pd.DataFrame(chartdftwo[colnamex].value_counts())
-    chartdftwo = pd.DataFrame({colnamex: list(summary.index), 'count': summary[colnamex]})
-    chartdftwo = chartdftwo[[colnamex, 'count']]
-    chartdftwo.values.tolist()
+def radarChart(chartdfthree, chartdffour, colnamex, charttitle, chartcontainerstr):
+
     chart = {
-  "gauge": {
+        "chart": {
+    "enabled": True,
+    "container": chartcontainerstr,
+    "title": {
+      "enabled": True,
+      "text": charttitle
+    },
+    "tooltip": {
+      "format": "Value: {%Value}",
+      "enabled": True
+    },
+    "credits": {
+      "text": "AnyChart",
+      "url": "https://www.anychart.com/?utm_source=registered",
+      "alt": "AnyChart - JavaScript Charts designed to be embedded and integrated",
+      "imgAlt": "AnyChart - JavaScript Charts",
+      "logoSrc": "https://static.anychart.com/logo.png",
+      "enabled": False
+    },
+    "selectMarqueeFill": {
+      "color": "#d3d3d3",
+      "opacity": 0.4
+    },
+    "legend": {
+      "enabled": True
+    },
+    "xScale": 0,
+    "yScale": 1,
+    "series": [
+      {
+        "enabled": True,
+        "seriesType": "line",
+        "meta": {},
+        "name": "Comet",
+        "markers": {
+          "enabled": True,
+          "type": "circle",
+          "size": 2
+        },
+        "data": [
+            {
+                "x": "Mean",
+                "value": chartdfthree[colnamex].mean()
+            },
+            {
+                "x": "Median",
+                "value": chartdfthree[colnamex].median()
+            },
+            {
+                "x": "Standard Deviation",
+                "value": chartdfthree[colnamex].std()
+            },
+            {
+                "x": "Longest",
+                "value": chartdfthree[colnamex].max()
+            },
+            {
+                "x": "Shortest",
+                "value": chartdfthree[colnamex].min()
+            }
+
+        ],
+        "xScale": 0,
+        "yScale": 1
+      },
+
+      {
+        "enabled": True,
+        "seriesType": "line",
+        "meta": {},
+        "name": "gordon",
+        "markers": {
+          "enabled": True,
+          "type": "circle",
+          "size": 2
+        },
+        "data": [
+            {
+                "x": "Mean",
+                "value": chartdffour[colnamex].mean()
+            },
+            {
+                "x": "Median",
+                "value": chartdffour[colnamex].median()
+            },
+            {
+                "x": "Standard Deviation",
+                "value": chartdffour[colnamex].std()
+            },
+            {
+                "x": "Longest",
+                "value": chartdffour[colnamex].max()
+            },
+            {
+                "x": "Shortest",
+                "value": chartdffour[colnamex].min()
+            }
+
+        ],
+        "xScale": 0,
+        "yScale": 1
+      }
+    ],
+    "xAxis": {
+      "enabled": True,
+      "labels": {
+        "enabled": True,
+        "padding": {
+          "left": 5,
+          "top": 5,
+          "bottom": 5,
+          "right": 5
+        }
+      }
+    },
+    "scales": [
+      {},
+      {
+         "type": "log",
+        "maximum": 22000,
+        "minimum": 0,
+        "ticks": {
+          "mode": "logarithmic"
+        },
+        "minorTicks": {
+          "mode": "logarithmic"
+        },
+        "logBase": 7.58
+      }
+    ],
+    "type": "radar"
+  }
+    }
+    chartjson = json.dumps(chart)
+    return chartjson
+
+def gaugeChart(chartdffive, chartdfsix, colnamex, charttitle, chartcontainerstr):
+    a = int((chartdffive['result'] == 1).sum())
+    b = int((chartdfsix['result'] == 1).sum())
+    x = float(int((chartdffive['result'] == 1).sum() + (chartdffive['result'] == 0).sum()))
+    y = float(int((chartdfsix['result'] == 1).sum() + (chartdfsix['result'] == 0).sum()))
+    e = (a / x) * 100
+    f = (b / y) * 100
+
+    chart = {"gauge": {
     "enabled": True,
     "container": chartcontainerstr,
     "title": {
@@ -570,7 +670,7 @@ def countGaugeChart(chartdftwo, colnamex, charttitle, chartcontainerstr):
         "anchor": "rightCenter",
         "offsetX": 0,
         "offsetY": "100%",
-        "text": "Temazepam, <span style=\"\">23%</span>",
+        "text": "Comet, <span style=\"\">93.6%</span>",
         "minFontSize": 8,
         "maxFontSize": 72,
         "adjustFontSize": {
@@ -621,160 +721,7 @@ def countGaugeChart(chartdftwo, colnamex, charttitle, chartcontainerstr):
         "anchor": "rightCenter",
         "offsetX": 0,
         "offsetY": "80%",
-        "text": "Guaifenesin, <span style=\"\">34%</span>",
-        "minFontSize": 8,
-        "maxFontSize": 72,
-        "adjustFontSize": {
-          "width": False,
-          "height": False
-        },
-        "rotation": 0,
-        "position": "leftTop"
-      },
-      {
-        "enabled": True,
-        "zIndex": 50,
-        "fontSize": 13,
-        "fontFamily": "Verdana, Helvetica, Arial, sans-serif",
-        "fontColor": "#7c868e",
-        "fontOpacity": 1,
-        "fontDecoration": "none",
-        "fontStyle": "normal",
-        "fontVariant": "normal",
-        "fontWeight": "normal",
-        "letterSpacing": "normal",
-        "textDirection": "ltr",
-        "lineHeight": "normal",
-        "textIndent": 0,
-        "vAlign": "middle",
-        "hAlign": "center",
-        "textWrap": "byLetter",
-        "textOverflow": "",
-        "selectable": False,
-        "disablePointerEvents": False,
-        "useHtml": True,
-        "background": {
-          "zIndex": 0,
-          "enabled": False,
-          "fill": "#ffffff",
-          "stroke": "none",
-          "disablePointerEvents": False,
-          "cornerType": "round",
-          "corners": 0
-        },
-        "padding": {
-          "left": 10,
-          "top": 0,
-          "bottom": 0,
-          "right": 10
-        },
-        "height": "8.5%",
-        "anchor": "rightCenter",
-        "offsetX": 0,
-        "offsetY": "60%",
-        "text": "Salicylic Acid, <span style=\"\">67%</span>",
-        "minFontSize": 8,
-        "maxFontSize": 72,
-        "adjustFontSize": {
-          "width": False,
-          "height": False
-        },
-        "rotation": 0,
-        "position": "leftTop"
-      },
-      {
-        "enabled": True,
-        "zIndex": 50,
-        "fontSize": 13,
-        "fontFamily": "Verdana, Helvetica, Arial, sans-serif",
-        "fontColor": "#7c868e",
-        "fontOpacity": 1,
-        "fontDecoration": "none",
-        "fontStyle": "normal",
-        "fontVariant": "normal",
-        "fontWeight": "normal",
-        "letterSpacing": "normal",
-        "textDirection": "ltr",
-        "lineHeight": "normal",
-        "textIndent": 0,
-        "vAlign": "middle",
-        "hAlign": "center",
-        "textWrap": "byLetter",
-        "textOverflow": "",
-        "selectable": False,
-        "disablePointerEvents": False,
-        "useHtml": True,
-        "background": {
-          "zIndex": 0,
-          "enabled": False,
-          "fill": "#ffffff",
-          "stroke": "none",
-          "disablePointerEvents": False,
-          "cornerType": "round",
-          "corners": 0
-        },
-        "padding": {
-          "left": 10,
-          "top": 0,
-          "bottom": 0,
-          "right": 10
-        },
-        "height": "8.5%",
-        "anchor": "rightCenter",
-        "offsetX": 0,
-        "offsetY": "40%",
-        "text": "Fluoride, <span style=\"\">93%</span>",
-        "minFontSize": 8,
-        "maxFontSize": 72,
-        "adjustFontSize": {
-          "width": False,
-          "height": False
-        },
-        "rotation": 0,
-        "position": "leftTop"
-      },
-      {
-        "enabled": True,
-        "zIndex": 50,
-        "fontSize": 13,
-        "fontFamily": "Verdana, Helvetica, Arial, sans-serif",
-        "fontColor": "#7c868e",
-        "fontOpacity": 1,
-        "fontDecoration": "none",
-        "fontStyle": "normal",
-        "fontVariant": "normal",
-        "fontWeight": "normal",
-        "letterSpacing": "normal",
-        "textDirection": "ltr",
-        "lineHeight": "normal",
-        "textIndent": 0,
-        "vAlign": "middle",
-        "hAlign": "center",
-        "textWrap": "byLetter",
-        "textOverflow": "",
-        "selectable": False,
-        "disablePointerEvents": False,
-        "useHtml": True,
-        "background": {
-          "zIndex": 0,
-          "enabled": False,
-          "fill": "#ffffff",
-          "stroke": "none",
-          "disablePointerEvents": False,
-          "cornerType": "round",
-          "corners": 0
-        },
-        "padding": {
-          "left": 10,
-          "top": 0,
-          "bottom": 0,
-          "right": 10
-        },
-        "height": "8.5%",
-        "anchor": "rightCenter",
-        "offsetX": 0,
-        "offsetY": "20%",
-        "text": "Zinc Oxide, <span style=\"\">56%</span>",
+        "text": "Gordon, <span style=\"\">96.6%</span>",
         "minFontSize": 8,
         "maxFontSize": 72,
         "adjustFontSize": {
@@ -785,7 +732,14 @@ def countGaugeChart(chartdftwo, colnamex, charttitle, chartcontainerstr):
         "position": "leftTop"
       }
     ],
-
+    "credits": {
+      "text": "AnyChart",
+      "url": "https://www.anychart.com/?utm_source=registered",
+      "alt": "AnyChart - JavaScript Charts designed to be embedded and integrated",
+      "imgAlt": "AnyChart - JavaScript Charts",
+      "logoSrc": "https://static.anychart.com/logo.png",
+      "enabled": False
+    },
     "selectMarqueeFill": {
       "color": "#d3d3d3",
       "opacity": 0.4
@@ -795,7 +749,8 @@ def countGaugeChart(chartdftwo, colnamex, charttitle, chartcontainerstr):
     "stroke": "none",
     "sweepAngle": 270,
     "data": [
-      chartdftwo
+      round(e,1),
+      round(f,1)
     ],
     "axes": [
       {
@@ -868,108 +823,58 @@ def countGaugeChart(chartdftwo, colnamex, charttitle, chartcontainerstr):
         "position": "center",
         "width": "17%",
         "radius": "80%"
-      },
-    #   {
-    #     "enabled": True,
-    #     "zIndex": 5,
-    #     "fill": "#ef6c00",
-    #     "stroke": "none",
-    #     "hatchFill": "none",
-    #     "axisIndex": 0,
-    #     "dataIndex": 2,
-    #     "position": "center",
-    #     "width": "17%",
-    #     "radius": "60%"
-    #   },
-    #   {
-    #     "enabled": True,
-    #     "zIndex": 5,
-    #     "fill": "#ffd54f",
-    #     "stroke": "none",
-    #     "hatchFill": "none",
-    #     "axisIndex": 0,
-    #     "dataIndex": 3,
-    #     "position": "center",
-    #     "width": "17%",
-    #     "radius": "40%"
-    #   },
-    #   {
-    #     "enabled": True,
-    #     "zIndex": 5,
-    #     "fill": "#455a64",
-    #     "stroke": "none",
-    #     "hatchFill": "none",
-    #     "axisIndex": 0,
-    #     "dataIndex": 4,
-    #     "position": "center",
-    #     "width": "17%",
-    #     "radius": "20%"
-    #   },
-    #   {
-    #     "enabled": True,
-    #     "zIndex": 4,
-    #     "fill": "#F5F4F4",
-    #     "stroke": "none",
-    #     "hatchFill": "none",
-    #     "axisIndex": 0,
-    #     "dataIndex": 5,
-    #     "position": "center",
-    #     "width": "17%",
-    #     "radius": "100%"
-    #   },
-    #   {
-    #     "enabled": True,
-    #     "zIndex": 4,
-    #     "fill": "#F5F4F4",
-    #     "stroke": "none",
-    #     "hatchFill": "none",
-    #     "axisIndex": 0,
-    #     "dataIndex": 5,
-    #     "position": "center",
-    #     "width": "17%",
-    #     "radius": "80%"
-    #   },
-    #   {
-    #     "enabled": True,
-    #     "zIndex": 4,
-    #     "fill": "#F5F4F4",
-    #     "stroke": "none",
-    #     "hatchFill": "none",
-    #     "axisIndex": 0,
-    #     "dataIndex": 5,
-    #     "position": "center",
-    #     "width": "17%",
-    #     "radius": "60%"
-    #   },
-    #   {
-    #     "enabled": True,
-    #     "zIndex": 4,
-    #     "fill": "#F5F4F4",
-    #     "stroke": "none",
-    #     "hatchFill": "none",
-    #     "axisIndex": 0,
-    #     "dataIndex": 5,
-    #     "position": "center",
-    #     "width": "17%",
-    #     "radius": "40%"
-    #   },
-    #   {
-    #     "enabled": True,
-    #     "zIndex": 4,
-    #     "fill": "#F5F4F4",
-    #     "stroke": "none",
-    #     "hatchFill": "none",
-    #     "axisIndex": 0,
-    #     "dataIndex": 5,
-    #     "position": "center",
-    #     "width": "17%",
-    #     "radius": "20%"
-    #   }
-     ]
+      }
+    ]
   }
-
 }
-
-    chartjson = pickle.dumps(chart)
+    chartjson = json.dumps(chart)
     return chartjson
 
+def countDonutTwoChart(chartdftwo, colnamex, charttitle, chartcontainerstr):
+    summary = pd.DataFrame(chartdftwo[colnamex].value_counts())
+    chartdftwo = pd.DataFrame({colnamex: list(summary.index), 'count': summary[colnamex]})
+    chartdftwo = chartdftwo[[colnamex, 'count']]
+    chartdataone = chartdftwo.values.tolist()
+
+    chart = {
+        "chart": {
+        "enabled": True,
+            "container": chartcontainerstr,
+        "title": {
+
+          "enabled": True,
+            "text": charttitle,
+
+         },
+            "credits": {
+                "text": "AnyChart",
+                "url": "https://www.anychart.com/?utm_source=registered",
+                "alt": "AnyChart - JavaScript Charts designed to be embedded and integrated",
+                "imgAlt": "AnyChart - JavaScript Charts",
+                "logoSrc": "https://static.anychart.com/logo.png",
+                "enabled": False
+            },
+            "selectMarqueeFill": {
+                "color": "#d3d3d3",
+                "opacity": 0.4
+            },
+            "type": "pie",
+            "data": chartdataone
+            ,
+            "labels": {
+                "enabled": True,
+                "disablePointerEvents": True
+            },
+            "radius": "43%",
+            "innerRadius": "30%",
+            "hoverHatchFill": "none"
+        }
+
+
+
+
+  }
+
+
+    chartjson = json.dumps(chart)
+    return chartjson

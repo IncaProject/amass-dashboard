@@ -15,14 +15,23 @@ class GatewayCipres(models.Model):
         managed = False
         db_table = 'amass_gateway_cipres'
 
+class IncaCipres(models.Model):
+    RESULT = models.SmallIntegerField(null=True, blank=True)
+    class Meta:
+        managed = False
+        db_table = 'amass_inca'
+
 class CometCipres(models.Model):
     resource_id = models.BigIntegerField(null=True, blank=True)
+    newturnaroundtime = models.FloatField(null=True, blank=True)
+    RESULT = models.SmallIntegerField(null=True, blank=True)
     class Meta:
         managed = False
         db_table = 'comet'
 
 class GordonCipres(models.Model):
     resource_id = models.BigIntegerField(null=True, blank=True)
+    newturnaroundtime = models.FloatField(null=True, blank=True)
     class Meta:
         managed = False
         db_table = 'gordon'
