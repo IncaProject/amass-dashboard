@@ -12,7 +12,7 @@ import cPickle as pickle
 # Create your views here.
 def index(request):
     data = GatewayCipres.objects.values("TOOL_NAME", "ERROR_MSG", "RESULT", "TERMINATE_DATE", "REMOTE_JOB_SUBMIT_DATE")
-    datatwo = CometCipres.objects.values("RESULT", "resource_id")
+    datatwo = CometCipres.objects.values("resource_id")
     datathree= GordonCipres.objects.values("resource_id")
     datafour = CometCipres.objects.values("newturnaroundtime")
     datafive = GordonCipres.objects.values("newturnaroundtime")
@@ -24,7 +24,6 @@ def index(request):
     datalistfour = list(datafive)
     datalistfive = list(datasix)
     datalistsix = list(dataseven)
-    datalistseven= list(datatwo)
 
 
     chartlist = [[x['TOOL_NAME'], x['ERROR_MSG'], x['RESULT'], x['REMOTE_JOB_SUBMIT_DATE'], x['TERMINATE_DATE']] for x in datalist]
@@ -33,7 +32,7 @@ def index(request):
     chartlistfour = [[x['newturnaroundtime']] for x in datalistfour]
     chartlistfive =  [[x['RESULT']] for x in datalistfive]
     chartlistsix =  [[x['RESULT']] for x in datalistsix]
-    chartlistseven = [[x['RESULT']] for x in datalisttwo]
+    chartlistseven = [[x['RESULT']] for x in datalistsix]
 
     # now get count for toolname and errormsg
     chartdf = pd.DataFrame(chartlist, columns=['toolname', 'errormsg', 'result','remotejbsubdate','termdate'])
@@ -51,6 +50,7 @@ def index(request):
     #chartdf['dff'] = chartdf['termdate'] - chartdf['remotejbsubdate']
     chartdftwo['resourceid'].replace([2814, 2796], ['Comet', 'Gordon'], inplace=True)
     chartdftwo = chartdftwo.loc[(chartdftwo!=0).any(axis=1)]
+    chartdfseven['result'].replace([0, 1], ['Failed Jobs', 'Successful Jobs'], inplace=True)
 
     a = int((chartdffive['result'] == 1).sum())
     b = int((chartdfsix['result'] == 1).sum())
@@ -92,7 +92,7 @@ def index(request):
     chartjsonsix = countColumnChart(chartdftwo, colnamex="resourceid", charttitle="CIPRES", charttitlex="Resources", charttitley="Number of Jobs", chartcontainerstr="chart")
     chartjsonseven = radarChart(chartdfthree, chartdffour, colnamex="newturnaroundtime", charttitle="Turnaround Times for Cipres(Hours)", chartcontainerstr="chart")
     chartjsoneight = gaugeChart(chartdffive, chartdfsix, colnamex="result", charttitle="Success Rates for Jobs", chartcontainerstr="chart")
-    chartjsonnine = countDonutTwoChart(chartdftwo, colnamex="result", charttitle="RESULT of Successful/Failed Jobs(Gordon)", chartcontainerstr="chart")
+    chartjsonnine = countDonutTwoChart(chartdfseven, colnamex="result", charttitle="RESULT of Successful/Failed Jobs(Gordon)", chartcontainerstr="chart")
     context = {"chartDataOne": chartjsonone, "chartDataTwo": chartjsontwo, "chartDataThree": chartjsonthree, "chartDataFour": chartjsonfour,
                "chartDataFive": chartjsonfive,
                "chartDataSix": chartjsonsix,
@@ -830,11 +830,11 @@ def gaugeChart(chartdffive, chartdfsix, colnamex, charttitle, chartcontainerstr)
     chartjson = json.dumps(chart)
     return chartjson
 
-def countDonutTwoChart(chartdftwo, colnamex, charttitle, chartcontainerstr):
-    summary = pd.DataFrame(chartdftwo[colnamex].value_counts())
-    chartdftwo = pd.DataFrame({colnamex: list(summary.index), 'count': summary[colnamex]})
-    chartdftwo = chartdftwo[[colnamex, 'count']]
-    chartdataone = chartdftwo.values.tolist()
+def countDonutTwoChart(chartdfseven, colnamex, charttitle, chartcontainerstr):
+    summary = pd.DataFrame(chartdfseven[colnamex].value_counts())
+    chartdfseven = pd.DataFrame({colnamex: list(summary.index), 'count': summary[colnamex]})
+    chartdfseven = chartdfseven[[colnamex, 'count']]
+    chartdataone = chartdfseven.values.tolist()
 
     chart = {
         "chart": {

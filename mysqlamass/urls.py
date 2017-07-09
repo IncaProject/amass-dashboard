@@ -19,5 +19,9 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^amassplot/', include('amassplot.urls')),
+    # url(r'^dashboard/', include('dash.urls')),
+    # url(r'^dash/contrib/plugins/rss-feed/',
+    # include('dash.contrib.plugins.rss_feed.urls')),
+    # url(r'^', include('dash.contrib.apps.public_dashboard.urls')),
 
 ]
