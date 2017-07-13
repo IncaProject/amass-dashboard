@@ -4,9 +4,8 @@ from dash.base import BaseDashboardPlugin
 from dash.factory import plugin_factory, plugin_widget_factory
 
 from .dash_widgets import (
-    BaseBubbleChartWidget,
-    BaseStackedToGroupedBarsChartWidget,
-    BaseSunburstPartitionChartWidget,
+    BaseACChart1Widget, BaseACChart2Widget, BaseACChart3Widget, BaseACChart4Widget, BaseACChart5Widget,
+BaseACChart6Widget, BaseACChart7Widget, BaseACChart8Widget, BaseACChart9Widget
 )
 from .forms import ChartForm
 
@@ -22,30 +21,65 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 class BaseChartPlugin(BaseDashboardPlugin):
     """Base chart plugin."""
 
-    group = _("D3 plugins")
+    group = _("AnyChart plugins")
     form = ChartForm
     html_classes = ['chartonic']
 
 
-class BaseBubbleChartPlugin(BaseChartPlugin):
-    """Base bubble chart plugin."""
+class BaseChart1Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
 
-    name = _("Bubble Chart")
-    html_classes = ['chartonic', 'd3-bubble-chart-plugin']
+    name = _("Chart1")
+    html_classes = ['chartonic', 'any-chart-plugin']
 
+class BaseChart2Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
 
-class BaseStackedToGroupedBarsChartPlugin(BaseChartPlugin):
-    """Base stacked-to-grouped bars chart plugin."""
+    name = _("Chart2")
+    html_classes = ['chartonic', 'any-chart-plugin']
 
-    name = _("Stacked-to-grouped bars chart")
-    html_classes = ['chartonic', 'd3-stacked-to-grouped-bars-chart-plugin']
+class BaseChart3Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
 
+    name = _("Chart3")
+    html_classes = ['chartonic', 'any-chart-plugin']
 
-class BaseSunburstPartitionChartPlugin(BaseChartPlugin):
-    """Base sunburst partition chart plugin."""
+class BaseChart4Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
 
-    name = _("Sunburst partition chart")
-    html_classes = ['chartonic', 'd3-sunburst-partition-chart-plugin']
+    name = _("Chart4")
+    html_classes = ['chartonic', 'any-chart-plugin']
+
+class BaseChart5Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
+
+    name = _("Chart5")
+    html_classes = ['chartonic', 'any-chart-plugin']
+
+class BaseChart6Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
+
+    name = _("Chart6")
+    html_classes = ['chartonic', 'any-chart-plugin']
+
+class BaseChart7Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
+
+    name = _("Chart7")
+    html_classes = ['chartonic', 'any-chart-plugin']
+
+class BaseChart8Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
+
+    name = _("Chart8")
+    html_classes = ['chartonic', 'any-chart-plugin']
+
+class BaseChart9Plugin(BaseChartPlugin):
+    """Base any chart plugin."""
+
+    name = _("Chart9")
+    html_classes = ['chartonic', 'any-chart-plugin']
+
 
 # *****************************************************************************
 # ********** Generating and registering the plugins using factory *************
@@ -59,15 +93,42 @@ sizes = (
     (7, 7),
 )
 
-plugin_factory(BaseBubbleChartPlugin,
-               'd3_bubble_chart',
+plugin_factory(BaseChart1Plugin,
+               'any_chart',
                sizes)
-plugin_factory(BaseStackedToGroupedBarsChartPlugin,
-               'd3_stacked_to_grouped_bars_chart',
+
+plugin_factory(BaseChart2Plugin,
+               'any_chart',
                sizes)
-plugin_factory(BaseSunburstPartitionChartPlugin,
-               'd3_sunburst_partition_chart',
+
+plugin_factory(BaseChart3Plugin,
+               'any_chart',
                sizes)
+
+plugin_factory(BaseChart4Plugin,
+               'any_chart',
+               sizes)
+
+plugin_factory(BaseChart5Plugin,
+               'any_chart',
+               sizes)
+
+plugin_factory(BaseChart6Plugin,
+               'any_chart',
+               sizes)
+
+plugin_factory(BaseChart7Plugin,
+               'any_chart',
+               sizes)
+
+plugin_factory(BaseChart8Plugin,
+               'any_chart',
+               sizes)
+
+plugin_factory(BaseChart9Plugin,
+               'any_chart',
+               sizes)
+
 
 # *****************************************************************************
 # ********************************* Registering widgets ***********************
@@ -75,53 +136,157 @@ plugin_factory(BaseSunburstPartitionChartPlugin,
 
 # Registering chart plugin widgets
 
-# Bubble Chart
-plugin_widget_factory(BaseBubbleChartWidget,
+# Any Chart
+plugin_widget_factory(BaseACChart1Widget,
                       'android',
                       'main',
-                      'd3_bubble_chart',
+                      'any_chart',
                       sizes)
-plugin_widget_factory(BaseBubbleChartWidget,
+plugin_widget_factory(BaseACChart1Widget,
                       'windows8',
                       'main',
-                      'd3_bubble_chart',
+                      'any_chart',
                       sizes)
-plugin_widget_factory(BaseBubbleChartWidget,
+plugin_widget_factory(BaseACChart1Widget,
                       'bootstrap2_fluid',
                       'main',
-                      'd3_bubble_chart',
+                      'any_chart',
                       sizes)
 
-# Stacked-to-grouped bars chart
-plugin_widget_factory(BaseStackedToGroupedBarsChartWidget,
+plugin_widget_factory(BaseACChart2Widget,
                       'android',
                       'main',
-                      'd3_stacked_to_grouped_bars_chart',
+                      'any_chart',
                       sizes)
-plugin_widget_factory(BaseStackedToGroupedBarsChartWidget,
+plugin_widget_factory(BaseACChart2Widget,
                       'windows8',
                       'main',
-                      'd3_stacked_to_grouped_bars_chart',
+                      'any_chart',
                       sizes)
-plugin_widget_factory(BaseStackedToGroupedBarsChartWidget,
+plugin_widget_factory(BaseACChart2Widget,
                       'bootstrap2_fluid',
                       'main',
-                      'd3_stacked_to_grouped_bars_chart',
+                      'any_chart',
                       sizes)
 
-# Sunburst Partition
-plugin_widget_factory(BaseSunburstPartitionChartWidget,
+plugin_widget_factory(BaseACChart3Widget,
                       'android',
                       'main',
-                      'd3_sunburst_partition_chart',
+                      'any_chart',
                       sizes)
-plugin_widget_factory(BaseSunburstPartitionChartWidget,
+plugin_widget_factory(BaseACChart3Widget,
                       'windows8',
                       'main',
-                      'd3_sunburst_partition_chart',
+                      'any_chart',
                       sizes)
-plugin_widget_factory(BaseSunburstPartitionChartWidget,
+plugin_widget_factory(BaseACChart3Widget,
                       'bootstrap2_fluid',
                       'main',
-                      'd3_sunburst_partition_chart',
+                      'any_chart',
                       sizes)
+
+plugin_widget_factory(BaseACChart4Widget,
+                      'android',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart4Widget,
+                      'windows8',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart4Widget,
+                      'bootstrap2_fluid',
+                      'main',
+                      'any_chart',
+                      sizes)
+
+plugin_widget_factory(BaseACChart5Widget,
+                      'android',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart5Widget,
+                      'windows8',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart5Widget,
+                      'bootstrap2_fluid',
+                      'main',
+                      'any_chart',
+                      sizes)
+
+plugin_widget_factory(BaseACChart6Widget,
+                      'android',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart6Widget,
+                      'windows8',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart6Widget,
+                      'bootstrap2_fluid',
+                      'main',
+                      'any_chart',
+                      sizes)
+
+plugin_widget_factory(BaseACChart7Widget,
+                      'android',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart7Widget,
+                      'windows8',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart7Widget,
+                      'bootstrap2_fluid',
+                      'main',
+                      'any_chart',
+                      sizes)
+
+plugin_widget_factory(BaseACChart8Widget,
+                      'android',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart8Widget,
+                      'windows8',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart8Widget,
+                      'bootstrap2_fluid',
+                      'main',
+                      'any_chart',
+                      sizes)
+
+plugin_widget_factory(BaseACChart9Widget,
+                      'android',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart9Widget,
+                      'windows8',
+                      'main',
+                      'any_chart',
+                      sizes)
+plugin_widget_factory(BaseACChart9Widget,
+                      'bootstrap2_fluid',
+                      'main',
+                      'any_chart',
+                      sizes)
+
+
+
+
+
+
+
+
+
+

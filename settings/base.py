@@ -311,9 +311,8 @@ INSTALLED_APPS = (
     # Other project specific apps
     # 'admin_tools_dashboard',  # Admin dashboard
     'foo',  # Test app
-    'bar',  # Another test app
     'd3_samples',  # Sample D3 plugins
-    'news',  # Sample news plugin for Dash
+    'amassplot', # amass plot app
     # 'customauth',  # Custom user model
 )
 

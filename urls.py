@@ -17,12 +17,11 @@ url_patterns_args = [
     # django-dash URLs:
     url(r'^dashboard/', include('dash.urls')),
 
+
+
     # django-dash RSS contrib plugin URLs:
     url(r'^dash/contrib/plugins/rss-feed/',
         include('dash.contrib.plugins.rss_feed.urls')),
-
-    # django-dash News contrib plugin URLs:
-    url(r'^news/', include('news.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^administration/', include(admin.site.urls)),

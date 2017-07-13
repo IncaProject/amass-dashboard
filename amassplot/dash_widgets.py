@@ -31,41 +31,77 @@ class BaseChartWidget(BaseDashboardPluginWidget):
         )
 
 
-class BaseBubbleChartWidget(BaseChartWidget):
-    """Base bubble chart widget."""
+class BaseACChart1Widget(BaseChartWidget):
+    """Base piechart widget."""
 
     media_js = (
-        'js/d3.v3.min.js',  # Main D3 script
-        'js/d3_bubble_chart.js',  # Helper script
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
     )
-    _template = 'd3_samples/plugins/render_bubble_chart.html'
+    _template = 'amass/plugins/render_chart1.html'
 
-
-class BaseStackedToGroupedBarsChartWidget(BaseChartWidget):
-    """Stacked-to-grouped bars chart widget."""
+class BaseACChart2Widget(BaseChartWidget):
 
     media_js = (
-        'js/d3.v3.min.js',  # Main D3 script
-        'js/d3_stacked_to_grouped_bars_chart.js',  # Helper script
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
     )
+    _template = 'amass/plugins/render_chart2.html'
 
-    media_css = (
-        'css/d3_stacked_to_grouped_bars_chart.css',  # Specific styles
-    )
+class BaseACChart3Widget(BaseChartWidget):
 
-    _template = 'd3_samples/plugins/render_stacked_to_grouped_bars_chart.html'
-
-
-class BaseSunburstPartitionChartWidget(BaseChartWidget):
-    """Sunburst partition chart widget."""
 
     media_js = (
-        'js/d3.v3.min.js',  # Main D3 script
-        'js/d3_sunburst_partition_chart.js',  # Helper script
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
     )
+    _template = 'amass/plugins/render_chart3.html'
 
-    media_css = (
-        'css/d3_sunburst_partition_chart.css',  # Specific styles
+class BaseACChart4Widget(BaseChartWidget):
+
+    media_js = (
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
     )
+    _template = 'amass/plugins/render_chart4.html'
 
-    _template = 'd3_samples/plugins/render_d3_sunburst_partition_chart.html'
+class BaseACChart5Widget(BaseChartWidget):
+
+    media_js = (
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
+    )
+    _template = 'amass/plugins/render_chart5.html'
+
+class BaseACChart6Widget(BaseChartWidget):
+
+    media_js = (
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
+    )
+    _template = 'amass/plugins/render_chart6.html'
+
+class BaseACChart7Widget(BaseChartWidget):
+
+    media_js = (
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
+    )
+    _template = 'amass/plugins/render_chart7.html'
+
+class BaseACChart8Widget(BaseChartWidget):
+
+    media_js = (
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
+    )
+    _template = 'amass/plugins/render_chart8.html'
+
+class BaseACChart9Widget(BaseChartWidget):
+
+    media_js = (
+        'https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js',
+        'https://cdn.anychart.com/themes/latest/dark_blue.min.js'
+    )
+    _template = 'amass/plugins/render_chart9.html'
+
