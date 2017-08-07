@@ -17,12 +17,11 @@ from .helpers import PROJECT_DIR, gettext
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = False
+DEBUG = False
 DEBUG_TOOLBAR = False
-# TEMPLATE_DEBUG = DEBUG
-DEV = False
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Anurag Aiyer', 'ak1aiyer@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -44,41 +43,31 @@ MANAGERS = ADMINS
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/etc/my.cnf',
-        },
-    }
-}
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Los_Angeles'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en'
+#LANGUAGE_CODE = 'en'
 
-LANGUAGES = (
-    ('en', gettext("English")),  # Main language!
-    ('hy', gettext("Armenian")),
-    ('nl', gettext("Dutch")),
-    ('ru', gettext("Russian")),
-)
+# LANGUAGES = (
+#     ('en', gettext("English")),  # Main language!
+# )
 
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
@@ -324,10 +313,10 @@ if DJANGO_LTE_1_6:
 # Using custom user model
 # AUTH_USER_MODEL = 'customauth.MyUser'
 
-LOGIN_REDIRECT_URL = '/en/dashboard/'
-LOGIN_URL = '/en/accounts/login/'
-LOGIN_ERROR_URL = '/en/accounts/login/'
-LOGOUT_URL = '/en/accounts/logout/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_URL = '/accounts/login/'
+LOGIN_ERROR_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout/'
 
 # Tell slim to use localised language names
 # SLIM_USE_LOCAL_LANGUAGE_NAMES = True

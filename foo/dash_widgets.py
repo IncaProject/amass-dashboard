@@ -139,6 +139,14 @@ class Image3x3ExampleMainWidget(Image3x3Widget):
     layout_uid = 'example'
     placeholder_uid = 'main'
 
+class Image10x3ExampleMainWidget(BaseImageWidget):
+    """Image10x3 plugin widget for Example layout (placeholder `main`)."""
+
+    layout_uid = 'example'
+    placeholder_uid = 'main'
+    plugin_uid = 'image_10x3'
+    cols = 10
+    rows = 3
 
 class Image3x8ExampleLeftShortcutsWidget(BaseImageWidget):
     """Image3x8 plugin widget for Example layout.

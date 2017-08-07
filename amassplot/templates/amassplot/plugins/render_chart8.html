@@ -1,13 +1,19 @@
-<p>
-<script type="text/javascript">
-    anychart.onDocumentReady(function () {
-        // create pie chart with passed data
+        <link rel="stylesheet" href="https://cdn.anychart.com/css/7.14.0/anychart-ui.min.css"/>
+        <style>
+        html, #container8 {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+       </style>
 
-        var gauge = anychart.fromJson({{chartDataEight|safe}});
-        gauge.draw();
 
-    });
+        <div id="container8" style="width: 500px; height: 400px;"></div>
+        <script type="text/javascript">
 
+            $(document).ready(function() {
+                doChart8({{chartDataEight|safe}});
 
-</script>
-</p>
+            });
+        </script>

@@ -1,43 +1,21 @@
-<p>
-<script type="text/javascript">
+<link rel="stylesheet" href="https://cdn.anychart.com/css/7.14.0/anychart-ui.min.css"/>
+        <style>
+            html, #container9{
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+        </style>
 
 
-   anychart.onDocumentReady(function () {
-        // create pie chart with passed data
+        <div id="container9" style="width: 500px; height: 400px;"></div>
 
-{#        var chart = anychart.fromJson({{chartDataFive|safe}});#}
-{#        chart.bounds(0, 160, '80%', '60%');#}
-{#        chart.draw();#}
-{#        #}
-         var chart = anychart.fromJson({{chartDataNine|safe}});
-        chart.innerRadius('40%');
-        // set chart labels position to outside
-        //create variables for legends
-        chart.labels().position('outside');
-         // legends
-        var legend = chart.legend();
-        legend.enabled(true);
-        // Set maximum width and height.
-        legend.maxWidth("80%");
-        legend.maxHeight("20%");
-        // set position mode
-        legend.positionMode("outside");
-        // set position and alignement
-        legend.position("bottom");
-        legend.align("center");
-        legend.itemsLayout("verticalExpandable");
-        // paginator position
-        legend.paginator().orientation("bottom");
-        // initiate chart drawing
-        chart.bounds(0, 160, '80%', '60%');
+        <script type="text/javascript">
 
-        chart.draw();
+            $(document).ready(function() {
+                doChart9({{chartDataNine|safe}});
 
-    });
-
-
-
-
-
-</script>
-</p>
+            });
+        </script>

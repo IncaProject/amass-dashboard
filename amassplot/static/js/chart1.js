@@ -1,8 +1,11 @@
- function doChart1(chartDataOne) {
+function doChart1(chartDataOne) {
+        console.log('doChart1() called');
+        anychart.licenseKey("bfef.biz-5e9092fb-70cd7951");
         anychart.theme('darkBlue');
-
         // create pie chart with passed data
-        var chart = anychart.fromJson(chartDataOne|safe);
+        var chart = anychart.fromJson(chartDataOne);
+        var credits = chart.credits();
+        credits.enabled(false);
         chart.innerRadius('40%');
         // set chart labels position to outside
         chart.labels().position('outside');
@@ -21,8 +24,8 @@
         // paginator position
         legend.paginator().orientation("bottom");
         // initiate chart drawing
-        chart.bounds(0, 160, '80%', '60%');
-
+        chart.bounds(0, 0, '100%', '100%');
+        chart.container('container1');
         chart.draw();
 
  };

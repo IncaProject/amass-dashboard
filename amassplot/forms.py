@@ -16,3 +16,14 @@ class ChartForm(forms.Form, DashboardPluginFormBase):
     ]
 
     title = forms.CharField(label=_("Title"), required=True)
+
+
+class ChartForm1(forms.Form, DashboardPluginFormBase):
+    """Chart form for `ChartBasePlugin` plugin."""
+
+    plugin_data_fields = [
+        ("title", ""),
+    ]
+
+    title = forms.CharField(label=_("Title"), required=True)
+

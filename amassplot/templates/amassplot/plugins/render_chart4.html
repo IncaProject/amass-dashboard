@@ -1,17 +1,20 @@
-<p>
-<script type="text/javascript">
-    anychart.onDocumentReady(function () {
-        // create pie chart with passed data
-
-        var chart = anychart.fromJson({{chartDataFour|safe}});
-        chart.bounds(0, 160, '80%', '70%');
-        chart.draw();
-
-    });
-
+<link rel="stylesheet" href="https://cdn.anychart.com/css/7.14.0/anychart-ui.min.css"/>
+        <style>
+            html, #container4 {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+       </style>
 
 
+        <div id="container4" style="width: 500px; height: 400px;"></div>
 
+        <script type="text/javascript">
 
-</script>
-</p>
+            $(document).ready(function() {
+                doChart4({{chartDataFour|safe}});
+
+            });
+        </script>

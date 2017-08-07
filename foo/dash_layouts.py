@@ -14,8 +14,8 @@ class ExampleMainPlaceholder(BaseDashboardPlaceholder):
     """Main placeholder of the Example layout."""
 
     uid = 'main'
-    cols = 5
-    rows = 4
+    cols = 10
+    rows = 55
     cell_width = 110
     cell_height = 95
 
@@ -24,8 +24,8 @@ class ExampleLeftShortcutsPlaceholder(BaseDashboardPlaceholder):
     """Left shortcuts placeholder of the Example layout."""
 
     uid = 'left_shortcuts'
-    cols = 3
-    rows = 8
+    cols = 1
+    rows = 1
     cell_width = 55
     cell_height = 55
 
@@ -40,7 +40,7 @@ class ExampleTopShortcutsPlaceholder(ExampleLeftShortcutsPlaceholder):
     """Top shortcuts placeholder of the Example layout."""
 
     uid = 'top_shortcuts'
-    cols = 8
+    cols = 1
     rows = 1
     cell_width = 55
     cell_height = 55

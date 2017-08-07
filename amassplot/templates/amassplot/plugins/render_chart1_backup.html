@@ -1,0 +1,13 @@
+<p>
+    <strong>{{ plugin.data.title }}</strong>
+    <span id="chart-{{ plugin.html_id }}" ></span>
+    <div id="chart"></div>
+    <script type="text/javascript">
+        // *****************************************************************
+        // ************************* Initialisation ************************
+        // *****************************************************************
+        $(document).ready(function(){
+            doChart1({{ chartDataOne }});
+        });
+    </script>
+</p>

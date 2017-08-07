@@ -1,6 +1,11 @@
   function doChart5(chartDataFive) {
         // create pie chart with passed data
-        var chart = anychart.fromJson(chartDataFive|safe);
+        console.log('doChart5() called');
+        anychart.licenseKey("bfef.biz-5e9092fb-70cd7951");
+        anychart.theme('darkBlue');
+        var chart = anychart.fromJson(chartDataFive);
+        var credits = chart.credits();
+        credits.enabled(false);
         chart.innerRadius('40%');
         // set chart labels position to outside
         //create variables for legends
@@ -20,8 +25,8 @@
         // paginator position
         legend.paginator().orientation("bottom");
         // initiate chart drawing
-        chart.bounds(0, 160, '80%', '60%');
-
+        chart.bounds(0, 0, '100%', '100%');
+        chart.container('container5');
         chart.draw();
 
     };

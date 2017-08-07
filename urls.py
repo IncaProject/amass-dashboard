@@ -33,6 +33,7 @@ url_patterns_args = [
 
     # django-dash public dashboards contrib app:
     url(r'^', include('dash.contrib.apps.public_dashboard.urls')),
+
 ]
 
 if versions.DJANGO_LTE_1_7:

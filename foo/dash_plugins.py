@@ -17,6 +17,7 @@ from foo.dash_widgets import (
     Image2x2ExampleMainWidget,
     Image3x2ExampleMainWidget,
     Image3x3ExampleMainWidget,
+    Image10x3ExampleMainWidget,
     Image3x8ExampleLeftShortcutsWidget,
     Image3x8ExampleRightShortcutsWidget,
     Image8x1ExampleTopShortcutsWidget,
@@ -64,8 +65,14 @@ class Image8x1Plugin(BaseImagePlugin):
 
     uid = 'image_8x1'
 
-
 plugin_registry.register(Image8x1Plugin)
+
+class Image10x3Plugin(BaseImagePlugin):
+    """Image10x3 dashboard plugin."""
+
+    uid = 'image_10x3'
+
+plugin_registry.register(Image10x3Plugin)
 
 # ******************************************************
 # ***************** Registering widgets ****************
@@ -90,6 +97,8 @@ plugin_widget_registry.register(Image1x1ExampleMainWidget)
 plugin_widget_registry.register(Image2x2ExampleMainWidget)
 plugin_widget_registry.register(Image3x2ExampleMainWidget)
 plugin_widget_registry.register(Image3x3ExampleMainWidget)
+plugin_widget_registry.register(Image10x3ExampleMainWidget)
+
 
 plugin_widget_registry.register(Image3x8ExampleLeftShortcutsWidget)
 plugin_widget_registry.register(Image3x8ExampleRightShortcutsWidget)
