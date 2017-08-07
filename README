@@ -1,0 +1,32 @@
+Installation Instructions
+=========================
+cd /home/<username?
+virtualenv venv
+source venv/bin/activate
+
+# this activates virtual environment
+mkdir /home/<username>/github
+cd github
+mkdir incaproject
+cd incaproject
+mkdir amass-dashboard
+cd amass-dashboard
+git init
+git status
+git remote add origin https://github.com/IncaProject/amass-dashboard.git
+git checkout -b master
+git pull origin master
+ls
+# now go up one level and create directories needed by Django and django-dash
+mkdir db logs media static tmp
+mkdir media/static
+# now amass database is used as Django admin db
+cd amass-dashboard
+setenv DJANGO_SETTINGS_MODULE='settings.production'
+export DJANGO_SETTINGS_MODULE
+python manage.py makemigrations
+python manage.py migrate
+python manage.py collectstatic
+python manage.py runserver
+
+
