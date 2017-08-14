@@ -9,20 +9,14 @@ mkdir /home/<username>/github
 cd github
 mkdir incaproject
 cd incaproject
-mkdir amass-dashboard
-cd amass-dashboard
-git init
-git status
-git remote add origin https://github.com/IncaProject/amass-dashboard.git
-git checkout -b master
-git pull origin master
-ls
-# now go up one level and create directories needed by Django and django-dash
+git clone https://github.com/IncaProject/amass-dashboard.git
+# now create directories needed by Django and django-dash
 mkdir db logs media static tmp
 mkdir media/static
 # now amass database is used as Django admin db
-# edit the database information in settings/production.py
+# edit the database information in my.cnf
 cd amass-dashboard
+# edit settings/base.py and change DEBUG = True (needed to view static files) and ADMINS
 setenv DJANGO_SETTINGS_MODULE='settings.production'
 export DJANGO_SETTINGS_MODULE
 pip install -r requirements_novenv.txt
