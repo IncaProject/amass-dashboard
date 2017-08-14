@@ -26,10 +26,11 @@ def doConnection():
         database = config.get('client', 'database')
         host = config.get('client', 'host')
         uid = config.get('client', 'user')
+        port = config.get('client', 'port')
         pwd = config.get('client', 'password').replace("'","")
 
-        connectstr = "mysql+pymysql://" + uid + ":" + pwd + "@" + host + "/" + database
-        engine = sqa.create_engine(connectstr,connect_args=dict(host = host, port = 3306))
+        connectstr = "mysql+pymysql://" + uid + ":" + pwd + "@" + host + ":" + port + "/" + database
+        engine = sqa.create_engine(connectstr)
         conn = engine.connect()
         if (conn is None):
             raise ValueError("DBConnection could not be completed")
