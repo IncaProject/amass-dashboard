@@ -187,7 +187,7 @@ QtPy==1.2.1
 radar==0.3
 redis==2.10.5
 redisco==0.1.4
-requests==2.18.1
+requests==2.20.0
 rope==0.11.0
 scandir==1.5
 scikit-image==0.13.0
