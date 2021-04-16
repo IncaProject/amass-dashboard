@@ -56,7 +56,7 @@ Django==1.11.23
 django-admin-tools==0.8.1
 django-autoslug==1.9.3
 django-dash==0.5.2
-django-debug-toolbar==1.8
+django-debug-toolbar==1.11.1
 django-libs==1.67.12
 django-mailer==1.2.2
 django-nine==0.1.13
