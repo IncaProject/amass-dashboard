@@ -159,7 +159,7 @@ ply==3.10
 prompt-toolkit==1.0.14
 psutil==5.2.2
 ptyprocess==0.5.2
-py==1.4.34
+py==1.10.0
 pyasn1==0.2.3
 # PyAudio==0.2.7
 # pycosat==0.6.2
