@@ -52,7 +52,7 @@ dask==0.15.1
 decorator==4.0.11
 dill==0.2.7
 distributed==1.18.0
-Django==1.11.23
+Django==2.2.24
 django-admin-tools==0.8.1
 django-autoslug==1.9.3
 django-dash==0.5.2
