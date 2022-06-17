@@ -3,6 +3,6 @@ Django==1.11.23
 SQLAlchemy==1.1.11
 django_debug_toolbar==1.8
 django_nine==0.1.13
-numpy==1.13.1
+numpy==1.21.0
 django_admin_tools==0.8.1
 nine==1.0.0
